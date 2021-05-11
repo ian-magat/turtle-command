@@ -43,10 +43,9 @@ namespace Turtle_Command
                         {
                             if (moveMents.Count == 0)
                             {
-                                if (splitInput[0] == "PLACE")
+                                if (splitInput[0].ToUpper() == "PLACE")
                                 {
                                     moveMents.Add(input);
-
                                 }
                             }
                             else
@@ -83,58 +82,60 @@ namespace Turtle_Command
 
                     f = splitCoordinates[2];
                 }
+                 
+                    if (splitItem[0].ToUpper() == "LEFT")
+                    {
+                        if (f.ToUpper() == "NORTH" || f.ToUpper() == "SOUTH")
+                        {
+                            f = "WEST";
+                        }
+                        else if (f.ToUpper() == "EAST")
+                        {
+                            f = "NORTH";
+                        }
+                        else if (f.ToUpper() == "WEST")
+                        {
+                            f = "SOUTH";
+                        }
+                    }
+                    else if (splitItem[0].ToUpper() == "RIGHT")
+                    {
+                        if (f.ToUpper() == "NORTH" || f.ToUpper() == "SOUTH")
+                        {
+                            f = "EAST";
+                        }
+                        else if (f.ToUpper() == "EAST")
+                        {
+                            f = "SOUTH";
+                        }
+                        else if (f.ToUpper() == "WEST")
+                        {
+                            f = "NORTH";
+                        }
+                    }
 
-                if (splitItem[0].ToUpper() == "LEFT")
-                {
-                    if (f.ToUpper() == "NORTH" || f.ToUpper() == "SOUTH")
-                    {
-                        f = "WEST";
-                    }
-                    else if (f.ToUpper() == "EAST")
-                    {
-                        f = "NORTH";
-                    }
-                    else if (f.ToUpper() == "WEST")
-                    {
-                        f = "SOUTH";
-                    }
-                }
-                else if (splitItem[0].ToUpper() == "RIGHT")
-                {
-                    if (f.ToUpper() == "NORTH" || f.ToUpper() == "SOUTH")
-                    {
-                        f = "EAST";
-                    }
-                    else if (f.ToUpper() == "EAST")
-                    {
-                        f = "SOUTH";
-                    }
-                    else if (f.ToUpper() == "WEST")
-                    {
-                        f = "NORTH";
-                    }
-                }
 
-
-                if (splitItem[0].ToUpper() == "MOVE")
-                {
-                    if (f.ToUpper() == "NORTH")
+                    if (splitItem[0].ToUpper() == "MOVE")
                     {
-                        y++;
+                        if (f.ToUpper() == "NORTH")
+                        {
+                            y++;
+                        }
+                        else if (f.ToUpper() == "SOUTH")
+                        {
+                            y--;
+                        }
+                        else if (f.ToUpper() == "EAST")
+                        {
+                            x++;
+                        }
+                        else if (f.ToUpper() == "WEST")
+                        {
+                            x--;
+                        }
                     }
-                    else if (f.ToUpper() == "SOUTH")
-                    {
-                        y--;
-                    }
-                    else if (f.ToUpper() == "EAST")
-                    {
-                        x++;
-                    }
-                    else if (f.ToUpper() == "WEST")
-                    {
-                        x--;
-                    }
-                }
+                
+                    
             }
 
 
