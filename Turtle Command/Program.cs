@@ -1,48 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace Turtle_Command
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            int x = 0, y = 0;
-            string f= "";
+        static int x = 0, y = 0;
+        static string f = "";
 
-            List<string> listOfCommand = new List<string>(new string[] { "PLACE", "MOVE", "LEFT","RIGHT","REPORT" });
+        public static void turtleControl(bool isInput)
+        {
+
+            List<string> listOfCommand = new List<string>(new string[] { "PLACE", "MOVE", "LEFT", "RIGHT", "REPORT" });
             List<string> moveMents = new List<string>();
 
-            Console.WriteLine("0,0");
-
-            while (true)
+            if (!isInput)
             {
-                var input = Console.ReadLine();
-                var splitInput = input.Split(" ");
-                if ((x >= 5 || y >= 5) || (x == 0 && y == 0))
+                var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "movements.csv");
+                using (var reader = new StreamReader(path))
                 {
-                    if (splitInput[0].ToUpper() == "PLACE")
+                    while (!reader.EndOfStream)
                     {
-                        x = 0;
-                        y = 0;
-                       
+                        var line = reader.ReadLine();
+                        Console.WriteLine(line.Replace("\"",""));
+                        moveMents.Add(line.Replace("\"", ""));
                     }
-
                 }
-                 if (!string.IsNullOrEmpty(input))
+            }
+            else
+            {
+                while (true)
                 {
-                    
-                    if (listOfCommand.Contains(splitInput[0].ToUpper()))
-                    {
-                        moveMents.Add(input);
+                    var input = Console.ReadLine();
+                    var splitInput = input.Split(" ");
 
-                        if (input.ToUpper() == "REPORT")
+                    if (!string.IsNullOrEmpty(input))
+                    {
+
+                        if (listOfCommand.Contains(splitInput[0].ToUpper()))
                         {
-                            break;
+                            moveMents.Add(input);
+
+                            if (input.ToUpper() == "REPORT")
+                            {
+                                break;
+                            }
                         }
                     }
                 }
             }
+
 
             foreach (var item in moveMents)
             {
@@ -58,9 +67,9 @@ namespace Turtle_Command
                     else
                     {
                         x -= Convert.ToInt32(splitCoordinates[0]);
-                        y += Convert.ToInt32(splitCoordinates[1]);
+                        y -= Convert.ToInt32(splitCoordinates[1]);
                     }
-                 
+
                     f = splitCoordinates[2];
                 }
 
@@ -118,7 +127,33 @@ namespace Turtle_Command
             }
 
 
-            Console.WriteLine("output: " + x + "," + y + "," + f);
+            Console.WriteLine(String.Format("output: {0},{1},{2}", x, y, f.ToUpper()));
+        }
+        static void Main(string[] args)
+        {
+            Console.WriteLine("0,0");
+            Console.WriteLine("select input:\n[0]:from file\n[1]:standard input\n");
+            var inputType = Console.ReadLine();
+            var input = true;
+            while (true)
+            {
+                if (inputType == "0" || inputType == "1")
+                {
+                    input = inputType == "0" ? false : true;
+                    break;
+                }
+            }
+            
+
+            while (true)
+            {
+                turtleControl(input);
+                if (!input)
+                {
+                    break;
+                }
+            }
+            
         }
     }
 }
