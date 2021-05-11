@@ -41,7 +41,18 @@ namespace Turtle_Command
 
                         if (listOfCommand.Contains(splitInput[0].ToUpper()))
                         {
-                            moveMents.Add(input);
+                            if (moveMents.Count == 0)
+                            {
+                                if (splitInput[0] == "PLACE")
+                                {
+                                    moveMents.Add(input);
+
+                                }
+                            }
+                            else
+                            {
+                                moveMents.Add(input);
+                            }
 
                             if (input.ToUpper() == "REPORT")
                             {
